@@ -1,0 +1,19 @@
+{
+  "version": "0.1",
+  "citation_pattern": "\\[\\s*([0-9]+(?:\\s*(?:,|，|-)\\s*[0-9]+)*)\\s*\\]",
+  "bracket_pattern": "\\[[^\\]\\n]*\\]",
+  "numeric_bracket_pattern": "\\[\\s*[0-9]",
+  "citation_separator_pattern": "[,，]",
+  "range_separator": "-",
+  "sentence_pattern": ".+?(?:[。！？!?](?:\\s*\\[[^\\]\\n]*\\])*|(?<!\\d)\\.(?:\\s*\\[[^\\]\\n]*\\])*|(?<=\\d)\\.(?!\\d)(?:\\s*\\[[^\\]\\n]*\\])*|$)",
+  "chinese_pattern": "[\\u3400-\\u4dbf\\u4e00-\\u9fff]",
+  "english_word_pattern": "[A-Za-z]+(?:['’-][A-Za-z]+)*",
+  "heading_pattern": "^\\s*#{1,6}\\s+.+$",
+  "pii_patterns": [
+    "(?:患者姓名|病人姓名|住院号|门诊号|身份证号)\\s*[:：]\\s*\\S+",
+    "\\b(?:patient\\s+name|medical\\s+record\\s+(?:number|id))\\s*:\\s*\\S+"
+  ],
+  "paragraph_separator": "\n",
+  "strip_bom": true,
+  "docx_unsupported_xpath": "//w:tbl | //w:txbxContent | //w:ins | //w:del | //w:altChunk | //w:drawing | //w:object | //w:pict | //w:footnoteReference | //w:endnoteReference | //w:commentReference | //m:oMath"
+}

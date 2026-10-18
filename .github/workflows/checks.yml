@@ -1,0 +1,29 @@
+name: Product checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: browser/package-lock.json
+      - run: python -m venv .venv
+      - run: .venv/bin/python -m pip install -r backend/requirements-dev.lock
+      - run: .venv/bin/python -m pip install --no-deps -e backend
+      - run: ../.venv/bin/python -m unittest discover -s tests -v
+        working-directory: backend
+      - run: npm ci
+        working-directory: browser
+      - run: npx playwright install --with-deps chromium
+        working-directory: browser
+      - run: npm test
+        working-directory: browser
+      - run: .venv/bin/python -m pip check

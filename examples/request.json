@@ -1,0 +1,8 @@
+{
+  "document_id": "synthetic-example",
+  "references": [{"reference_id": 1, "title": "Synthetic source, not medical evidence"}],
+  "claims": [{"start": 26, "end": 54, "text": "Uncited synthetic assertion."}],
+  "language_mode": "en-en",
+  "authorized": true,
+  "single_section": true
+}

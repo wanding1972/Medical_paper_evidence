@@ -1,0 +1,27 @@
+{
+  "version": "0.1",
+  "implemented": false,
+  "scope": {
+    "cited_references_only": true,
+    "require_resolved_reference": true,
+    "require_readable_fulltext": true,
+    "allow_external_search": false,
+    "allow_abstract_as_evidence": false,
+    "allow_metadata_as_evidence": false,
+    "require_source_location": true
+  },
+  "retrieval": {
+    "method": "bm25",
+    "top_k": 10,
+    "validated": false
+  },
+  "reranking": {
+    "enabled": false
+  },
+  "evidence": {
+    "preserve_original_text": true,
+    "require_page": true,
+    "require_source_file_id": true,
+    "validate_against_original": true
+  }
+}

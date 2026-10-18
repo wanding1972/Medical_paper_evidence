@@ -1,0 +1,437 @@
+{
+  "version": "0.1",
+  "current_slice": "Product workflow: closed-corpus evidence audit",
+  "precedence": [
+    "explicit user constraints",
+    "attached requirements as design inputs",
+    "implementation defaults documented in ADR"
+  ],
+  "constraints": {
+    "R1": {
+      "kind": "boolean",
+      "requirement": "All business predicates, filters, labels, severities, weights, thresholds and messages are configuration data; Python provides parsing algorithms and generic typed predicate execution only."
+    },
+    "R2": {
+      "kind": "boolean",
+      "requirement": "No business Python modules directly in src or evidence_check root; all modules belong to subpackages."
+    },
+    "R3": {
+      "kind": "boolean",
+      "requirement": "Acyclic static imports; cross-domain imports use api only; no dynamic imports, eval or exec."
+    },
+    "R4": {
+      "kind": "boolean",
+      "requirement": "contracts/common must not import business domains or application/infrastructure."
+    }
+  },
+  "domains": {
+    "document": "Text structure, citation anchors and reference resolution",
+    "claim": "Validate explicitly selected candidate spans against original text",
+    "evidence": "Cited-only fulltext retrieval and page-span verification",
+    "audit": "Pure configurable decision evaluation"
+  },
+  "entities": {
+    "DocumentInput": [
+      "document_id",
+      "text",
+      "references",
+      "claims",
+      "language_mode",
+      "authorized"
+    ],
+    "Reference": [
+      "reference_id",
+      "title"
+    ],
+    "ClaimCandidate": [
+      "start",
+      "end",
+      "text"
+    ],
+    "Location": [
+      "paragraph_index",
+      "sentence_index",
+      "char_start",
+      "char_end"
+    ],
+    "Citation": [
+      "reference_ids",
+      "location"
+    ],
+    "Sentence": [
+      "text",
+      "location",
+      "citations"
+    ],
+    "DocumentBundle": [
+      "document_id",
+      "text",
+      "sentences",
+      "references"
+    ],
+    "ClaimRecord": [
+      "text",
+      "location",
+      "citation_ids"
+    ],
+    "Finding": [
+      "rule_id",
+      "severity",
+      "label",
+      "location",
+      "claim_text",
+      "citation_ids",
+      "message",
+      "guidance",
+      "review_status"
+    ],
+    "AuditReport": [
+      "document_id",
+      "input_sha256",
+      "policy_version",
+      "findings",
+      "summary"
+    ],
+    "EvidenceSpan": [
+      "span_id",
+      "reference_id",
+      "source_file_id",
+      "page",
+      "paragraph",
+      "char_start",
+      "char_end",
+      "text"
+    ],
+    "ComparisonFacts": [
+      "scope_relation",
+      "causal_relation",
+      "direction_relation",
+      "numeric_relation",
+      "evidence_refs"
+    ],
+    "AuditTask": [
+      "task_id",
+      "status",
+      "input_hash",
+      "versions",
+      "deletion_result"
+    ],
+    "SourceDocument": [
+      "reference_id",
+      "source_file_id",
+      "sha256",
+      "pages",
+      "error_code"
+    ],
+    "Observation": [
+      "claim_start",
+      "evidence_ids",
+      "support_relation",
+      "scope_relation",
+      "causal_relation",
+      "direction_relation",
+      "numeric_relation",
+      "rationale",
+      "origin"
+    ],
+    "TaskRecord": [
+      "task_id",
+      "status",
+      "created_at",
+      "expires_at",
+      "error_code"
+    ],
+    "ClaimAssessment": [
+      "claim",
+      "evidence",
+      "findings",
+      "predicted_label",
+      "coverage",
+      "review_status"
+    ]
+  },
+  "dependency_dag": {
+    "contracts": [],
+    "document": [
+      "contracts"
+    ],
+    "claim": [
+      "contracts"
+    ],
+    "evidence": [
+      "contracts"
+    ],
+    "audit": [
+      "contracts"
+    ],
+    "application": [
+      "contracts",
+      "document",
+      "claim",
+      "audit",
+      "evidence"
+    ],
+    "infrastructure": [
+      "contracts"
+    ],
+    "entrypoints": [
+      "application",
+      "infrastructure",
+      "contracts"
+    ]
+  },
+  "business_rules": [
+    {
+      "id": "missing_citation",
+      "stage": "POC-A",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "unresolved_reference",
+      "stage": "POC-A",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "source_unavailable",
+      "stage": "POC-A",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "unsupported_claim",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "scope_mismatch",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "causality_overclaim",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "direction_mismatch",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "numeric_mismatch",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "duplicate_reference",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "numeric_citation_syntax",
+      "stage": "POC-A",
+      "policy_location": "parsing.json"
+    },
+    {
+      "id": "invalid_or_descending_range",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "input_formats",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "mixed_language_lengths",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "single_section_declaration",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "reference_limit",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "supported_languages",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "claim_verbatim_location",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "authorized_material_only",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "patient_data_prohibited",
+      "stage": "POC-A preliminary detection; production review required",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "cited_fulltext_only",
+      "stage": "POC-B",
+      "policy_location": "retrieval.json"
+    },
+    {
+      "id": "no_abstract_or_metadata_evidence",
+      "stage": "POC-B",
+      "policy_location": "retrieval.json"
+    },
+    {
+      "id": "original_evidence_page_required",
+      "stage": "POC-B",
+      "policy_location": "retrieval.json"
+    },
+    {
+      "id": "multi_source_conflict_and_unknown",
+      "stage": "POC-B",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "llm_candidates_only_and_consent",
+      "stage": "POC-B",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "retention_24h_encryption_and_retries",
+      "stage": "service stage; local POC does not retain uploads",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "no_medical_verdict_or_score",
+      "stage": "all",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "human_review_required",
+      "stage": "all",
+      "policy_location": "audit_rules.json"
+    },
+    {
+      "id": "no_gold_label_overwrite",
+      "stage": "all",
+      "policy_location": "evaluation/annotation-schema.json"
+    },
+    {
+      "id": "acceptance_precision_recall_and_blind_split",
+      "stage": "evaluation",
+      "policy_location": "acceptance.json"
+    },
+    {
+      "id": "task_runtime_limit",
+      "stage": "service stage",
+      "policy_location": "acceptance.json"
+    },
+    {
+      "id": "citation_number_length",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "file_size_and_docx_expansion",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "unsupported_docx_structures",
+      "stage": "POC-A",
+      "policy_location": "limits.json + parsing.json"
+    },
+    {
+      "id": "parser_full_text_coverage",
+      "stage": "POC-A",
+      "policy_location": "limits.json"
+    },
+    {
+      "id": "complete_policy_content_hash",
+      "stage": "POC-A",
+      "policy_location": "report DTO"
+    },
+    {
+      "id": "candidate_patterns_not_gold",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "source_page_validation",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "evidence_closed_corpus_gate",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "semantic_observation_grounding",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "multi_reference_conservative_table",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "encrypted_task_retention",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "durable_worker_states",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "upload_size_count",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "consent_before_model",
+      "stage": "product",
+      "policy_location": "product.json"
+    },
+    {
+      "id": "export_and_human_review_separation",
+      "stage": "product",
+      "policy_location": "product.json"
+    }
+  ],
+  "current_scope": {
+    "implemented": [
+      "single-user web workbench",
+      "DOCX/Markdown + text PDF parsing",
+      "candidate extraction with typed metadata",
+      "cited-only BM25 and original page spans",
+      "grounded observations and eight-rule decision table",
+      "human re-audit without overwriting original",
+      "optional consented structured HTTPS model port",
+      "encrypted durable tasks, restart recovery and expiry",
+      "JSON/Markdown and PDF downloads",
+      "independent evaluation tool and CI configuration"
+    ],
+    "external_acceptance": [
+      "real provider integration with securely configured credentials",
+      "authorized independent medical gold and blind evaluation",
+      "real-user utility and willingness-to-pay study",
+      "production privacy/security/copyright review"
+    ],
+    "non_goals": [
+      "medical advice",
+      "paper scores",
+      "external evidence search",
+      "patient record processing",
+      "public paid SaaS before real-user validation"
+    ]
+  }
+}

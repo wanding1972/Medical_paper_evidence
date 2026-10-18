@@ -1,0 +1,359 @@
+{
+  "version": "0.1",
+  "document_gates": [
+    {
+      "when": [
+        {
+          "field": "authorized",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "code": "authorization_required",
+      "message": "必须确认具有处理正文与文献的授权。"
+    },
+    {
+      "when": [
+        {
+          "field": "single_section",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "code": "single_section_required",
+      "message": "本轮只接受单章节。"
+    },
+    {
+      "when": [
+        {
+          "field": "language_mode",
+          "op": "not_in",
+          "value": [
+            "zh-zh",
+            "zh-en",
+            "en-en"
+          ]
+        }
+      ],
+      "code": "unsupported_language",
+      "message": "不支持该语言模式。"
+    },
+    {
+      "when": [
+        {
+          "field": "text_length",
+          "op": "eq",
+          "value": 0
+        }
+      ],
+      "code": "empty_document",
+      "message": "正文不能为空。"
+    },
+    {
+      "when": [
+        {
+          "field": "chinese_chars",
+          "op": "gt",
+          "value": 5000
+        }
+      ],
+      "code": "document_too_long",
+      "message": "中文字符数超过上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "english_words",
+          "op": "gt",
+          "value": 3000
+        }
+      ],
+      "code": "document_too_long",
+      "message": "英文单词数超过上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "reference_count",
+          "op": "gt",
+          "value": 30
+        }
+      ],
+      "code": "too_many_references",
+      "message": "参考文献数量超过上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "duplicate_reference_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "duplicate_reference",
+      "message": "参考文献编号重复。"
+    },
+    {
+      "when": [
+        {
+          "field": "minimum_reference_id",
+          "op": "lt",
+          "value": 1
+        }
+      ],
+      "code": "invalid_reference_id",
+      "message": "参考文献编号必须为正整数。"
+    },
+    {
+      "when": [
+        {
+          "field": "empty_title_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "empty_reference_title",
+      "message": "参考文献标题不能为空。"
+    },
+    {
+      "when": [
+        {
+          "field": "heading_count",
+          "op": "gt",
+          "value": 1
+        }
+      ],
+      "code": "multiple_sections",
+      "message": "检测到多个章节标题。"
+    },
+    {
+      "when": [
+        {
+          "field": "pii_match_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "patient_data_detected",
+      "message": "检测到疑似患者信息，请停止提交并人工处理。"
+    }
+  ],
+  "claim_gates": [
+    {
+      "when": [
+        {
+          "field": "start",
+          "op": "lt",
+          "value": 0
+        }
+      ],
+      "code": "invalid_claim_location",
+      "message": "Claim 起点越界。"
+    },
+    {
+      "when": [
+        {
+          "field": "end_overflow",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "invalid_claim_location",
+      "message": "Claim 终点越界。"
+    },
+    {
+      "when": [
+        {
+          "field": "span_length",
+          "op": "le",
+          "value": 0
+        }
+      ],
+      "code": "invalid_claim_location",
+      "message": "Claim 必须是非空正向区间。"
+    },
+    {
+      "when": [
+        {
+          "field": "text_matches",
+          "op": "eq",
+          "value": false
+        }
+      ],
+      "code": "claim_text_mismatch",
+      "message": "Claim 必须与原文逐字一致。"
+    },
+    {
+      "when": [
+        {
+          "field": "containing_sentence_count",
+          "op": "ne",
+          "value": 1
+        }
+      ],
+      "code": "claim_crosses_sentence",
+      "message": "Claim 必须位于一个句子内。"
+    },
+    {
+      "when": [
+        {
+          "field": "omitted_citation_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "claim_omits_citation",
+      "message": "Claim 区间不能遗漏所在句的引文。"
+    },
+    {
+      "when": [
+        {
+          "field": "overlap_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "overlapping_claims",
+      "message": "Claim 候选不能重叠。"
+    }
+  ],
+  "citation_gates": [
+    {
+      "when": [
+        {
+          "field": "minimum_id",
+          "op": "lt",
+          "value": 1
+        }
+      ],
+      "code": "invalid_citation",
+      "message": "引文编号必须为正整数。"
+    },
+    {
+      "when": [
+        {
+          "field": "descending_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "invalid_citation_range",
+      "message": "引用区间必须升序。"
+    },
+    {
+      "when": [
+        {
+          "field": "expanded_count",
+          "op": "gt",
+          "value": 30
+        }
+      ],
+      "code": "citation_expansion_limit",
+      "message": "单个引文展开超过上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "malformed_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "invalid_citation",
+      "message": "数字引文格式非法。"
+    },
+    {
+      "when": [
+        {
+          "field": "maximum_token_length",
+          "op": "gt",
+          "value": 9
+        }
+      ],
+      "code": "citation_number_too_long",
+      "message": "引文编号数字过长。"
+    }
+  ],
+  "file_gates": [
+    {
+      "when": [
+        {
+          "field": "suffix",
+          "op": "not_in",
+          "value": [
+            ".md",
+            ".markdown",
+            ".docx"
+          ]
+        }
+      ],
+      "code": "unsupported_format",
+      "message": "仅支持 Markdown 和 DOCX。"
+    },
+    {
+      "when": [
+        {
+          "field": "size_bytes",
+          "op": "gt",
+          "value": 2097152
+        }
+      ],
+      "code": "file_too_large",
+      "message": "文件超过本轮大小上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "expanded_bytes",
+          "op": "gt",
+          "value": 8388608
+        }
+      ],
+      "code": "archive_too_large",
+      "message": "DOCX 解压后超过本轮大小上限。"
+    },
+    {
+      "when": [
+        {
+          "field": "unsupported_structure_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "unsupported_docx_structure",
+      "message": "本轮不支持含表格、图片、文本框、批注修订或嵌入对象的 DOCX，请提供纯文本章节。"
+    }
+  ],
+  "security": {
+    "external_llm_enabled": false,
+    "patient_data_allowed": false,
+    "pii_detection_status": "preliminary regex only; NOT production de-identification",
+    "persist_uploads": false,
+    "original_file_retention_hours": 24,
+    "parsed_text_retention_hours": 24,
+    "external_llm_requires_consent": true
+  },
+  "formats": {
+    "markdown": [
+      ".md",
+      ".markdown"
+    ],
+    "docx": [
+      ".docx"
+    ]
+  },
+  "single_section_declaration_required": true,
+  "parser_gates": [
+    {
+      "when": [
+        {
+          "field": "unparsed_chars",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "code": "document_parse_incomplete",
+      "message": "解析未覆盖全部正文，请人工检查输入格式。"
+    }
+  ]
+}

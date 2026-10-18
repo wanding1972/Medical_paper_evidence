@@ -1,0 +1,25 @@
+{
+  "scope": "POC-A citation integrity; synthetic regression and integration tests, NOT medical accuracy evaluation",
+  "tests_run": 40,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "successful": true,
+  "source_config_sha256": "3b1af2093e4562546a1c1a12904b357ac0a746c9a6111afc3d72417aec4be57d",
+  "versions": {
+    "pydantic": "2.14.1",
+    "fastapi": "0.143.3",
+    "starlette": "1.8.0",
+    "python-docx": "1.2.0",
+    "httpx": "0.28.1",
+    "uvicorn": "0.54.0"
+  },
+  "human_gold_accuracy_evaluation": "not_run",
+  "semantic_audit": "not_implemented",
+  "R1": "pass (bounded static checks + configuration mutation tests + manual review)",
+  "R2": "pass",
+  "R3": "pass",
+  "R4": "pass"
+}

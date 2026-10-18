@@ -1,0 +1,73 @@
+{
+  "evidence_check.__init__": [],
+  "evidence_check.contracts.models": [],
+  "evidence_check.contracts.predicates": [
+    "evidence_check.contracts.errors",
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy"
+  ],
+  "evidence_check.contracts.__init__": [],
+  "evidence_check.contracts.errors": [],
+  "evidence_check.contracts.policy": [
+    "evidence_check.contracts.models"
+  ],
+  "evidence_check.domains.__init__": [],
+  "evidence_check.infrastructure.api": [
+    "evidence_check.contracts.errors",
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.contracts.predicates"
+  ],
+  "evidence_check.infrastructure.__init__": [],
+  "evidence_check.application.api": [
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.domains.document.api",
+    "evidence_check.domains.claim.api",
+    "evidence_check.domains.audit.api"
+  ],
+  "evidence_check.application.__init__": [],
+  "evidence_check.entrypoints.cli": [
+    "evidence_check.application.api",
+    "evidence_check.contracts.errors",
+    "evidence_check.contracts.models",
+    "evidence_check.infrastructure.api"
+  ],
+  "evidence_check.entrypoints.__init__": [],
+  "evidence_check.entrypoints.web": [
+    "evidence_check.application.api",
+    "evidence_check.contracts.errors",
+    "evidence_check.contracts.models",
+    "evidence_check.infrastructure.api"
+  ],
+  "evidence_check.domains.audit.api": [
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.domains.audit.engine"
+  ],
+  "evidence_check.domains.audit.__init__": [],
+  "evidence_check.domains.audit.engine": [
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.contracts.predicates"
+  ],
+  "evidence_check.domains.document.api": [
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.contracts.predicates",
+    "evidence_check.domains.document.parser"
+  ],
+  "evidence_check.domains.document.parser": [
+    "evidence_check.contracts.errors",
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.contracts.predicates"
+  ],
+  "evidence_check.domains.document.__init__": [],
+  "evidence_check.domains.claim.api": [
+    "evidence_check.contracts.models",
+    "evidence_check.contracts.policy",
+    "evidence_check.contracts.predicates"
+  ],
+  "evidence_check.domains.claim.__init__": []
+}

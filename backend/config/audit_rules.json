@@ -1,0 +1,126 @@
+{
+  "version": "0.1",
+  "labels": [
+    "supported",
+    "partially_supported",
+    "contradicted",
+    "unverified",
+    "not_assessable"
+  ],
+  "severities": [
+    "info",
+    "warning",
+    "error"
+  ],
+  "review_status": "需复核",
+  "audit_scope": "引用完整性 POC-A；未进行 Claim 自动抽取、全文或语义证据审计。",
+  "disclaimer": "学习与写作辅助，不构成医疗建议、发表保证或学术评价。",
+  "rules": [
+    {
+      "id": "missing_citation",
+      "enabled": true,
+      "unit_kind": "claim",
+      "when": [
+        {
+          "field": "citation_count",
+          "op": "eq",
+          "value": 0
+        }
+      ],
+      "label": "not_assessable",
+      "severity": "warning",
+      "message": "人工选定的论断没有数字引用。",
+      "guidance": "核对论断及其已有文献引用；系统不代找文献。",
+      "reference_field": "citation_ids"
+    },
+    {
+      "id": "unresolved_reference",
+      "enabled": true,
+      "unit_kind": "sentence",
+      "when": [
+        {
+          "field": "unresolved_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "label": "not_assessable",
+      "severity": "error",
+      "message": "数字引用无法映射到参考文献条目。",
+      "guidance": "核对正文编号和参考文献列表。",
+      "reference_field": "unresolved_ids"
+    },
+    {
+      "id": "source_unavailable",
+      "enabled": true,
+      "unit_kind": "sentence",
+      "when": [
+        {
+          "field": "resolved_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "label": "not_assessable",
+      "severity": "info",
+      "message": "引用全文不可用或尚未通过可审计性核验。",
+      "guidance": "检查全文授权、文件可读性和原文定位。",
+      "reference_field": "resolved_ids"
+    },
+    {
+      "id": "unsupported_claim",
+      "enabled": false,
+      "unit_kind": "claim",
+      "when": [],
+      "label": "unverified",
+      "severity": "warning",
+      "message": "已引用全文中未检索到相关候选片段，不能据此认定论断错误。",
+      "guidance": "人工核对已引用全文。",
+      "reference_field": "citation_ids"
+    },
+    {
+      "id": "scope_mismatch",
+      "enabled": false,
+      "unit_kind": "claim",
+      "when": [],
+      "label": "partially_supported",
+      "severity": "warning",
+      "message": "范围限定可能不一致。",
+      "guidance": "对照原文限定项复核。",
+      "reference_field": "citation_ids"
+    },
+    {
+      "id": "causality_overclaim",
+      "enabled": false,
+      "unit_kind": "claim",
+      "when": [],
+      "label": "partially_supported",
+      "severity": "warning",
+      "message": "因果强度可能超出证据。",
+      "guidance": "复核研究类型与断言强度。",
+      "reference_field": "citation_ids"
+    },
+    {
+      "id": "direction_mismatch",
+      "enabled": false,
+      "unit_kind": "claim",
+      "when": [],
+      "label": "contradicted",
+      "severity": "error",
+      "message": "方向可能相反。",
+      "guidance": "回到可定位证据人工核对。",
+      "reference_field": "citation_ids"
+    },
+    {
+      "id": "numeric_mismatch",
+      "enabled": false,
+      "unit_kind": "claim",
+      "when": [],
+      "label": "contradicted",
+      "severity": "error",
+      "message": "数值可能不一致。",
+      "guidance": "核对单位、分母和时间窗口。",
+      "reference_field": "citation_ids"
+    }
+  ]
+}

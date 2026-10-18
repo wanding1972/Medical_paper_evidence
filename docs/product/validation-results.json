@@ -1,0 +1,28 @@
+{
+  "scope": "Single-user closed-corpus product workflow; not clinical or public-production acceptance",
+  "tests_run": 71,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "successful": true,
+  "source_config_ui_sha256": "0fb87aa9ffb9d093c538bb2c1d7891529e341cce1e04b60d65589baffdd493e7",
+  "static_modules": 37,
+  "browser": "pass: login/upload/binding/evidence/review/export/mobile/delete; zero JS errors",
+  "wheel": "built and isolated target package/assets/routes tested",
+  "evaluation_cli": "synthetic insufficient input rejected with expected exit 2",
+  "external_model": "mocked structured HTTP tested; real service not run",
+  "clinical_gold": "not available; blind evaluation not run",
+  "production_release": "not published or certified",
+  "R1": "pass (bounded automatic checks, mutation tests and manual review)",
+  "R2": "pass",
+  "R3": "pass",
+  "R4": "pass",
+  "versions": {
+    "pydantic": "2.14.1",
+    "fastapi": "0.143.3",
+    "pymupdf": "1.28.2",
+    "cryptography": "50.0.2",
+    "python-multipart": "0.0.32",
+    "jsonschema": "4.26.0"
+  }
+}

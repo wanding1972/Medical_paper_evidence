@@ -1,0 +1,22 @@
+{
+  "version": "0.1",
+  "gold_data_available": false,
+  "minimum_development_claims": 100,
+  "independent_claims_per_language": 100,
+  "language_modes": [
+    "zh-zh",
+    "zh-en",
+    "en-en"
+  ],
+  "citation_accuracy_min": 0.98,
+  "integrity_precision_min": 0.95,
+  "semantic_warning_precision_min": 0.8,
+  "task_seconds_max": 600,
+  "blind_split_required": true,
+  "template_is_acceptance_data": false,
+  "metrics": [
+    "precision",
+    "recall"
+  ],
+  "runtime_fixture_checks_are_not_accuracy_claims": true
+}

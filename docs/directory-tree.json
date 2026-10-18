@@ -1,0 +1,124 @@
+{
+  "backend": {
+    "pyproject.toml": "package and dependencies",
+    "config": {
+      "audit_rules.json": "versioned declarative policy",
+      "limits.json": "versioned declarative policy",
+      "parsing.json": "versioned declarative policy",
+      "retrieval.json": "versioned declarative policy",
+      "acceptance.json": "versioned declarative policy",
+      "product.json": "product policy, safety limits, lifecycle and decisions"
+    },
+    "src": {
+      "evidence_check": {
+        "__init__.py": "package marker only",
+        "contracts": {
+          "__init__.py": "marker",
+          "models.py": "immutable DTOs",
+          "policy.py": "typed declarative policy",
+          "errors.py": "stable errors",
+          "predicates.py": "finite generic comparison operations",
+          "product.py": "immutable evidence/task DTO and ports",
+          "product_policy.py": "typed product policy"
+        },
+        "domains": {
+          "__init__.py": "marker",
+          "document": {
+            "__init__.py": "marker",
+            "api.py": "public parse_document",
+            "parser.py": "numeric citations, text locations"
+          },
+          "claim": {
+            "__init__.py": "marker",
+            "api.py": "public normalize_claims",
+            "candidates.py": "configured local candidate extraction"
+          },
+          "audit": {
+            "__init__.py": "marker",
+            "api.py": "public evaluate_audit",
+            "engine.py": "generic predicate evaluation",
+            "product.py": "grounded observations and decision table"
+          },
+          "evidence": {
+            "__init__.py": "empty",
+            "api.py": "cited-only validation and BM25 pure retrieval"
+          }
+        },
+        "application": {
+          "__init__.py": "marker",
+          "api.py": "audit orchestration and public facade",
+          "product.py": "full closed-corpus pipeline with injected model port",
+          "evaluation.py": "pure independent metrics"
+        },
+        "infrastructure": {
+          "__init__.py": "marker",
+          "api.py": "validated policy loading and document IO",
+          "pdf.py": "PDF adapter",
+          "model.py": "consented structured model adapter",
+          "store.py": "encrypted SQLite durable tasks",
+          "worker.py": "restart recovery and expiry",
+          "runtime.py": "local key and auth setup"
+        },
+        "entrypoints": {
+          "__init__.py": "marker",
+          "cli.py": "local CLI",
+          "web.py": "stateless FastAPI assembly",
+          "server.py": "product composition root",
+          "assets": {
+            "index.html": "upload and review UI",
+            "app.js": "workflow client",
+            "style.css": "responsive styles"
+          },
+          "evaluate.py": "schema-validated blind evaluation CLI"
+        }
+      }
+    },
+    "tests": {
+      "test_document.py": "normal/error parsing",
+      "test_claim.py": "candidate validation",
+      "test_audit.py": "policy and findings",
+      "test_workflow.py": "DOCX/CLI/API integration",
+      "test_architecture.py": "R1-R4 structural enforcement",
+      "test_policy.py": "configuration rejection and mutation",
+      "support.py": "synthetic fixtures",
+      "test_audit_regressions.py": "stage 6 discovered failure regressions",
+      "test_product.py": "PDF/retrieval/observations/pipeline",
+      "test_tasks.py": "encrypted storage, recovery, API and deletion",
+      "test_evaluation.py": "metrics denominator, template and split rejection"
+    },
+    "requirements-dev.lock": "tested dependency pins"
+  },
+  "docs": {
+    "constraint-ontology.json": "enforceable constraints and complete rule inventory",
+    "directory-tree.json": "this manifest",
+    "contracts.md": "public interfaces",
+    "stages": "stage outputs and self checks",
+    "inputs": "unaltered source requirements",
+    "product": "incremental model/tree/contracts/policy/implementation/audit + runbook"
+  },
+  "evaluation": {
+    "annotation-schema.json": "original schema",
+    "annotation-template.jsonl": "pending templates, never acceptance data",
+    "labeling-guide.md": "original guide",
+    "README.md": "original annotation instructions"
+  },
+  "examples": {
+    "chapter.md": "nonmedical synthetic text",
+    "request.json": "authorized synthetic example"
+  },
+  "README.md": "development instructions",
+  ".gitignore": "generated environment/build exclusions",
+  "AGENTS.md": "persistent user architecture constraints",
+  ".github": {
+    "workflows": {
+      "checks.yml": "unit/architecture/browser workflow (not executed remotely yet)"
+    }
+  },
+  "browser": {
+    "package.json": "pinned browser tool",
+    "package-lock.json": "exact browser dependency lock",
+    "tests": {
+      "workflow.cjs": "self-contained real Chromium workflow"
+    }
+  }
+}

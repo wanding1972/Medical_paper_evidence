@@ -30,6 +30,10 @@ python3 -m venv .venv
 
 可选参数：`--port`、`--host`、`--config-dir`、`--data-dir`。默认数据目录 `.evidence-data/` 已加入忽略规则。只支持一个服务进程/Worker 使用同一数据目录，第二个实例会明确拒绝启动。
 
+## 可下载演示文档
+
+[三份纯段落 Word 与配套 PDF](examples/demo-documents/README.md)；也可下载该目录的 `demo-documents.zip`。全部为明确标注的合成软件测试材料，不是真实医学研究或验收金标。三份均已实际运行解析和审计流程验证。
+
 ## 使用流程
 
 1. 选择正文文件，填写任务名称与正文/文献语言模式。

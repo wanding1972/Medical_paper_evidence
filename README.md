@@ -6,7 +6,18 @@
 
 ## 启动
 
-Linux、Python 3.12+，在仓库根目录执行：
+Python 3.12+。请按操作系统选择命令，在仓库根目录执行。
+
+**Windows CMD（你当前使用的终端）：**
+
+```bat
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r backend\requirements-dev.lock
+.venv\Scripts\python.exe -m pip install --no-deps -e backend
+.venv\Scripts\python.exe -m evidence_check.entrypoints.server
+```
+
+**Linux/macOS：**
 
 ```bash
 python3 -m venv .venv
@@ -56,7 +67,7 @@ PII 正则仍是初步拦截，不能保证检出所有患者信息。不得用�
 
 ## 数据与运行维护
 
-默认本地生成 `data.key`、`session.key` 和访问口令，文件0600、目录0700；也可通过 `EVIDENCE_DATA_KEY` 注入 Fernet 数据密钥、`EVIDENCE_ACCESS_PASSWORD` 注入访问口令。密钥不会回显。已有数据密钥不匹配时拒绝启动，不覆盖数据。
+默认本地生成 `data.key`、`session.key` 和访问口令；POSIX 系统文件0600、目录0700，Windows 使用所在目录继承的 NTFS ACL，请放在仅当前用户可读的目录；也可通过 `EVIDENCE_DATA_KEY` 注入 Fernet 数据密钥、`EVIDENCE_ACCESS_PASSWORD` 注入访问口令。密钥不会回显。已有数据密钥不匹配时拒绝启动，不覆盖数据。
 
 备份须同时考虑加密数据库与数据密钥，分开保管；丢失数据密钥无法恢复。默认密钥与数据库同机，**不能抵御整机/整个目录被窃取**；正式环境应由独立密钥管理或受保护挂载注入。恢复时保留 session.key，可保持本地用户归属；更换它会使旧会话失效并改变用户归属。
 

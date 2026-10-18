@@ -1,8 +1,8 @@
 """One durable worker per data directory; effects injected as a callback."""
-import fcntl
 import logging
 import threading
 import time
+from filelock import FileLock, Timeout
 from evidence_check.contracts.errors import EvidenceCheckError
 
 _LOG=logging.getLogger(__name__)
@@ -14,13 +14,21 @@ class Worker:
         self.lock=None;self.thread=None
 
     def start(self):
-        self.lock=(self.store.path.parent/'worker.lock').open('a')
-        try:fcntl.flock(self.lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        except BlockingIOError as error:
-            self.lock.close();self.lock=None
+        self.lock=FileLock(self.store.path.parent/'worker.lock',timeout=0,thread_local=False)
+        try:self.lock.acquire()
+        except Timeout as error:
+            self.lock=None
             raise EvidenceCheckError('worker_already_running','Only one worker may use this data directory.') from error
-        self.store.recover()
-        self.thread=threading.Thread(target=self.run,name='evidence-worker',daemon=True);self.thread.start()
+        except OSError as error:
+            self.lock=None
+            _LOG.error('worker_lock_failed')
+            raise EvidenceCheckError('worker_lock_failed','Cannot acquire the worker lock.') from error
+        try:
+            self.store.recover()
+            self.thread=threading.Thread(target=self.run,name='evidence-worker',daemon=True);self.thread.start()
+        except Exception:
+            self.lock.release();self.lock=None
+            raise
 
     def run(self):
         next_cleanup=0
@@ -47,4 +55,8 @@ class Worker:
         self.stop_event.set()
         if self.thread:self.thread.join()
         if self.lock:
-            fcntl.flock(self.lock,fcntl.LOCK_UN);self.lock.close();self.lock=None
+            try:self.lock.release()
+            except OSError as error:
+                _LOG.error('worker_unlock_failed')
+                raise EvidenceCheckError('worker_unlock_failed','Cannot release the worker lock.') from error
+            self.lock=None

@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import json
+import os
 from pathlib import Path
 import tempfile
 import time
@@ -56,7 +57,7 @@ class TaskTests(unittest.TestCase):
     def test_wrong_data_key_is_reported(self):
         runtime=Runtime(self.directory)
         with patch.dict('os.environ',{'EVIDENCE_DATA_KEY':Fernet.generate_key().decode()}),self.assertRaises(EvidenceCheckError):Runtime(self.directory)
-        self.assertEqual((self.directory/'access-password').stat().st_mode&0o777,0o600)
+        if os.name=='posix':self.assertEqual((self.directory/'access-password').stat().st_mode&0o777,0o600)
 
     def test_worker_error_is_not_semantic_result(self):
         def fail(payload):raise EvidenceCheckError('test_effect_failed','effect failed')
@@ -153,3 +154,25 @@ class TaskTests(unittest.TestCase):
         with self.store.connection() as db:
             raw=db.execute('SELECT diagnostics FROM tasks WHERE id=?',(task_id,)).fetchone()[0]
         self.assertEqual(self.store._decode(raw)['steps'][0]['step'],'audit')
+
+    def test_worker_stop_from_other_thread_releases_lock(self):
+        first=Worker(self.store,lambda p:p);first.start()
+        asyncio.run(asyncio.to_thread(first.stop))
+        second=Worker(self.store,lambda p:p)
+        try:second.start()
+        finally:second.stop()
+
+    def test_recovery_failure_releases_worker_lock(self):
+        first=Worker(self.store,lambda p:p)
+        with patch.object(self.store,'recover',side_effect=EvidenceCheckError('storage_failed','test')):
+            with self.assertRaises(EvidenceCheckError):first.start()
+        second=Worker(self.store,lambda p:p)
+        try:second.start()
+        finally:second.stop()
+
+    def test_lock_io_failure_has_stable_error(self):
+        worker=Worker(self.store,lambda p:p)
+        with patch('evidence_check.infrastructure.worker.FileLock') as lock:
+            lock.return_value.acquire.side_effect=PermissionError('test')
+            with self.assertLogs(level='ERROR'),self.assertRaises(EvidenceCheckError) as caught:worker.start()
+        self.assertEqual(caught.exception.code,'worker_lock_failed')

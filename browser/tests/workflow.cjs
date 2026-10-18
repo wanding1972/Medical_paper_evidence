@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
 const {spawn,execFileSync}=require('node:child_process');
 const fs=require('node:fs'),os=require('node:os'),path=require('node:path'),net=require('node:net');
 const root=path.resolve(__dirname,'../..');
-const python=process.env.EVIDENCE_TEST_PYTHON||path.join(root,'.venv/bin/python');
+const python=process.env.EVIDENCE_TEST_PYTHON||path.join(root,process.platform==='win32'?'.venv/Scripts/python.exe':'.venv/bin/python');
 const directory=fs.mkdtempSync(path.join(os.tmpdir(),'evidence-browser-'));
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function port(){const server=net.createServer();await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const number=server.address().port;await new Promise(resolve=>server.close(resolve));return number;}
